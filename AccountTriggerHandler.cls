@@ -11,7 +11,7 @@ public with sharing class AccountTriggerHandler {
 
     public static void onBeforeUpdate(List<Account> newList, Map<Id, Account> newMap,
             List<Account> oldList, Map<Id, Account> oldMap) {
-
+        AccountHelper.updateContactsFuture(AccountHelper.getIdsOfAccountsWithChangedBillingAddress(newMap, oldList));
     }
 
 
@@ -21,7 +21,7 @@ public with sharing class AccountTriggerHandler {
 
 
     public static void onAfterInsert(List<Account> newList, Map<Id, Account> newMap) {
-        AccountHelper.createNegotiationTasks(newList);
+        AccountHelper.createNegotiationTasks(AccountHelper.getIdList(newList));
     }
 
 
