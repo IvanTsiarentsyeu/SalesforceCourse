@@ -5,39 +5,30 @@
 public with sharing class AccountTriggerHandler {
 
     public static void onBeforeInsert(List<Account> newList) {
-
     }
-
 
     public static void onBeforeUpdate(List<Account> newList, Map<Id, Account> newMap,
             List<Account> oldList, Map<Id, Account> oldMap) {
         AccountHelper.updateContactsFuture(AccountHelper.getIdsOfAccountsWithChangedBillingAddress(newMap, oldList));
     }
 
-
     public static void onBeforeDelete(List<Account> oldList, Map<Id, Account> oldMap) {
-
     }
-
 
     public static void onAfterInsert(List<Account> newList, Map<Id, Account> newMap) {
         AccountHelper.createNegotiationTasks(AccountHelper.getIdList(newList));
     }
 
-
     public static void onAfterUpdate(List<Account> newList, Map<Id, Account> newMap,
             List<Account> oldList, Map<Id, Account> oldMap) {
-
+        UpdateContactsQueueable updateJob = new UpdateContactsQueueable(oldMap, oldList);
+        System.enqueueJob(updateJob);
     }
-
 
     public static void onAfterDelete(List<Account> oldList, Map<Id, Account> oldMap) {
-
     }
 
-
     public static void onAfterUndelete(List<Account> newList, Map<Id, Account> newMap) {
-
     }
 
 }

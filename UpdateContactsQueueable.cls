@@ -4,19 +4,24 @@
 
 public class UpdateContactsQueueable implements Queueable {
 
-    private Map <Id, Account> newMap;
+    private Map <Id, Account> oldMap;
     private List<Account> oldList;
 
-    public UpdateContactsQueueable (Map <Id, Account> newMap, List<Account> oldList) {
-        this.newMap = newMap;
+    public UpdateContactsQueueable (Map <Id, Account> oldMap, List<Account> oldList) {
+        this.oldMap = oldMap;
         this.oldList = oldList;
     }
 
     public void execute(QueueableContext context) {
         List<Contact> contactsToChange = new List<Contact>();
-        for (Account a : oldList){
-            if (a.BillingAddress <> newMap.get(a.Id).BillingAddress){
-                for (Contact c : newMap.get(a.Id).Contacts){
+        System.debug('oldlist ' + oldList);
+        for (Account a : [
+                SELECT Id, BillingStreet, BillingCity, BillingCountry,
+                         (SELECT Id, Is_Synced__c, Processed_By_Future__c FROM Contacts)
+                FROM Account
+                WHERE Id IN :oldList]){
+            if (a.BillingStreet <> oldMap.get(a.Id).BillingStreet){
+                for (Contact c : a.Contacts){
                     c.Is_Synced__c = false;
                     c.Processed_By_Queue__c = true;
                     contactsToChange.add(c);

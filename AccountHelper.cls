@@ -5,25 +5,31 @@
 public with sharing class AccountHelper {
 
     @Future
-    public static void updateContactsFuture (List<Id> accountsIdList){
+    public static void updateContactsFuture (List<Id> accountsIdList) {
+        System.debug('accountsIdList' + accountsIdList);
         List<Contact> contactsToChange = new List<Contact>();
-            for (Contact c: [SELECT Id, Is_Synced__c, Processed_By_Future__c
-                             FROM Contact
-                             WHERE OwnerId IN :accountsIdList]){
-                    c.Is_Synced__c = false;
-                    c.Processed_By_Future__c = true;
-                    contactsToChange.add(c);
+        for (Account a : [
+                SELECT Id, (SELECT Id, Is_Synced__c, Processed_By_Future__c FROM Contacts)
+                FROM Account
+                WHERE Id IN :accountsIdList]){
+            for (Contact c : a.Contacts) {
+                c.Is_Synced__c = false;
+                c.Processed_By_Future__c = true;
+                contactsToChange.add(c);
             }
+    }
         tryToUpsertContacts(contactsToChange);
     }
 
     public static List<Id> getIdsOfAccountsWithChangedBillingAddress (Map<Id, Account> newMap, List<Account> oldList){
         List<Account> accountsList = new List<Account>();
         for (Account a : oldList){
-            if (a.BillingAddress <> newMap.get(a.Id).BillingAddress){
+            System.debug(a.BillingStreet<>newMap.get(a.Id).BillingStreet);
+            if (a.BillingStreet<>newMap.get(a.Id).BillingStreet){
                 accountsList.add(a);
             }
         }
+        System.debug('accountsList'+ accountsList);
         return getIdList(accountsList);
     }
 
@@ -32,10 +38,12 @@ public with sharing class AccountHelper {
         for (Account a: accountsList){
             idList.add(a.Id);
         }
+        System.debug('Idlist' + idList);
         return idList;
     }
 
     private static void tryToUpsertContacts(List<Contact> ContactsToUpsert){
+        System.debug(ContactsToUpsert + ' size = ' + ContactsToUpsert.size());
         if (ContactsToUpsert<>null) {
             if (ContactsToUpsert.size() > 0) {
                 try {
