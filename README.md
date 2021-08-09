@@ -9,27 +9,26 @@ Create new git branch with name async_apex_task
 
 For AccountTriggerHandler move task creation logic to future method; set Task.IsSynced = false 
 Done: AccountHelper.createNegotiationTasks() *
------
+
 In AccountTriggerHandler create future method:
 For accounts in which BillingAddress changed select all related Contacts 
 Set to all Contacts Is Synced = false; Processed By Future = true;
 Done: AccountHelper.updateContactsFuture() *
------
+
 *canCallFuture() check was added to AccountTriggerHandler class in order to avoid conflicts between batch jobs and future methods
------
 
 In AccountTriggerHandler call Queueble Job, which perform similar logic:
 For accounts in which BillingAddress changed select all related Contacts
 Set to all Contacts Is Synced = false; Processed By Queue = true;
 Done: UpdateContactsQueueable (failed to access to the Contacts through the Trigger variables, used SELECT instead. Logs and failed code are in comments) 
------
+
 Crate Batch Job which select all tasks with  Is Synced = false
 Batch should copy from Account.Owner.Name to Task.AccountOwner__c
 Set Task.IsSynced__c = true;
 Update Account field Updated By Task = true;
 Use Query Locator
 Done: UpdateTaskAccounOwner_BatchQL
------
+
 Create Batch Job, which select all contacts with Is Synced = false
 Batch should copy from Account.BillingAddress to Contact.MailingAddress
 Set Contact.IsSynced__c = true;
@@ -39,7 +38,6 @@ Not done yet
 
 Create Scheduled Job which runs every 30 minutes and call 2 created batches
 Already done
------
 
 Without trigger task.
 Task goal of this is creating of 5 classes to practice using async features of the APEX language. Based on created data model add following logic:
