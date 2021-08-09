@@ -2,22 +2,12 @@ Practically-focused task
 
 Custom fields:
 
-Account:
-Boolean -  Updated By Task (default = false)
-Boolean – Updated By Contact (default = false)
-
-Contact:
-Boolean – Processed By Future (default = false)
-Boolean – Processed By Queue (default = false)
-Boolean – Is Synced (default = true)
-
-Task:
-Boolean – Is Synced (default = true)
-String – Account Owner
-
+Account:  Boolean -  Updated By Task (default = false)        Boolean – Updated By Contact (default = false)
+Contact:  Boolean – Processed By Future (default = false)     Boolean – Processed By Queue (default = false)       Boolean – Is Synced (default = true)
+Task:     Boolean – Is Synced (default = true)                String – Account Owner
 Create new git branch with name async_apex_task
 
-For AccountTriggerHandler move task creation logic to future method; set Task.IsSynced = false
+For AccountTriggerHandler move task creation logic to future method; set Task.IsSynced = false #AccountHelper.createNegotiationTasks()
 
 In AccountTriggerHandler create future method:
 For accounts in which BillingAddress changed select all related Contacts 
