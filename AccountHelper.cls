@@ -6,8 +6,7 @@ public with sharing class AccountHelper {
 
     @Future
     public static void updateContactsFuture (List<Id> accountsIdList) {
-        System.debug('accountsIdList' + accountsIdList);
-        List<Contact> contactsToChange = new List<Contact>();
+           List<Contact> contactsToChange = new List<Contact>();
         for (Account a : [
                 SELECT Id, (SELECT Id, Is_Synced__c, Processed_By_Future__c FROM Contacts)
                 FROM Account
