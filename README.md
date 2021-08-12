@@ -51,18 +51,23 @@ Select 150 Accounts from database.
 For accounts in which BillingAddress is not empty select all related Contacts 
 Set to all Contacts Is Synced = false; Processed By Future = true;
 Run created class using DevConsole.
+*Done: Pt2_150Accounts_Future
 
 Create Queueble Job to perform similar logic:
 For accounts in which BillingAddress is not empty select all related Contacts
 Set to all Contacts Is Synced = false; Processed By Queue = true;
 Run created class using DevConsole.
+*Done: Pt2_updateContacts_Queueable
 
 Create Batch Job which select all Сontacts with Is Synced = false
 Batch should copy from Account.BillingAddress to Contact.MailingAddress
 Set Contact.IsSynced__c = true;
 Update Account field Updated By Contact = true;
 Use Query Locator
+*Done: Pt2_CopyAddress_QueryLocator
 
 Create similar Batch and use Iterable
+*Done: Pt2_CopyAddress_Iterable
 
 Create Scheduled Job which runs every 30 minutes and call 2 created batches
+*Done: Pt2_MakeSchedule, Pt2_CopyAddressIterable_Schedulable, Pt2_CopyAddressQLocator_Schedulable
