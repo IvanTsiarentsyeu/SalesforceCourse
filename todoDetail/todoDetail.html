@@ -1,0 +1,51 @@
+<!-- Todo Detail -->
+<template>
+    <lightning-card>
+        <template if:true={todoid}>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-var-m-around_medium" align="left">
+                        <lightning-button-group>
+                            <lightning-button label=" < Previous" onclick={goUp}></lightning-button>
+                            <lightning-button label="   Next  > " onclick={goDown}></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-var-m-around_medium" align="right">
+                        <lightning-button-group>
+                            <c-todo-new onrefresh={handleRefresh}></c-todo-new>
+                            <c-todo-edit todoid={todoid} onrefresh={handleRefresh}></c-todo-edit>
+                            <lightning-button label="Delete" variant="destructive" icon-name="utility:delete"
+                                              onclick={deleteTodo}>
+                            </lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:false={todoid}>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-var-m-around_medium" align="left">
+                        <lightning-button-group>
+                            <lightning-button label=" < Previous" disabled></lightning-button>
+                            <lightning-button label="   Next  > " disabled></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-var-m-around_medium" align="right">
+                        <lightning-button-group>
+                            <c-todo-new onrefresh={handleRefresh}></c-todo-new>
+                            <lightning-button label="Edit" disabled></lightning-button>
+                            <lightning-button label="Delete" variant="destructive" icon-name="utility:delete"
+                                              disabled></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <c-todo-detail-item recordid={todoid}></c-todo-detail-item>
+    </lightning-card>
+</template>

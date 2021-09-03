@@ -1,0 +1,25 @@
+<template>
+    <div class="wrapper">
+        <header class="header">Things to do</header>
+        <section class="content">
+            <div class="columns">
+                <main class="main">
+                    <lightning-card>
+                        <div class="slds-var-m-around_medium">
+                            <c-todo-search onkeychange={handleKeyChange}
+                                           onprioritychange={handlePriorityChange}></c-todo-search>
+                        </div>
+                        <div class="list">
+                            <c-todo-list search-key={searchKey} priority={priority} todoid={selectedTodoId}
+                                         ontodoselected={handleTodoSelected}></c-todo-list>
+                        </div>
+                    </lightning-card>
+                </main>
+                <aside class="sidebar">
+                    <c-todo-detail todoid={selectedTodoId} onrefresh={handleRefresh} ongoup={handleGoUp}
+                                   ongodown={handleGoDown}></c-todo-detail>
+                </aside>
+            </div>
+        </section>
+    </div>
+</template>

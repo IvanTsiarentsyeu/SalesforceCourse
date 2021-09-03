@@ -1,0 +1,41 @@
+<!-- Todo Detail Item -->
+<template>
+    <lightning-card>
+        <template if:true={recordid}>
+            <template if:true={todoz.data}>
+                <div class="slds-var-m-around_medium">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-2">
+                            <p><b>{name}</b></p>
+                            <p><i>{isDone}</i></p>
+                            <hr>
+                            <p><b>Priority: </b>{priority} &nbsp;&nbsp;&nbsp; <b>Category: </b>{category}</p>
+                            <p><b>Todo created: </b>
+                                <lightning-formatted-date-time value={creation}></lightning-formatted-date-time>
+                            </p>
+                            <p><b>Has to be finished untill: </b>
+                                <lightning-formatted-date-time value={completion}></lightning-formatted-date-time>
+                            </p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2" align="center">
+                            <img src={imageUrl} alt={category}/>
+                        </div>
+                    </div>
+                    <hr>
+                    <p><b>Description:</b></p>
+                    <p>{description}</p>
+                </div>
+            </template>
+            <template if:true={todoz.error}>
+                The item is no longer existing
+            </template>
+        </template>
+        <template if:false={recordid}>
+
+        </template>
+    </lightning-card>
+</template>
+
+
+
+

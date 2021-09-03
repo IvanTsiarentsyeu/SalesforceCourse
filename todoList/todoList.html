@@ -1,0 +1,20 @@
+<!-- Todo List -->
+<template>
+    <div class="slds-var-m-around_medium">
+        <template if:true={todos}>
+            <template for:each={todos} for:item="todo">
+                <c-todo-list-item
+                        key={todo.Id}
+                        listitem={todo}
+                        onlistitemclick={handleListItemClick}>
+                </c-todo-list-item>
+            </template>
+
+        </template>
+
+        <template if:false={todos}>
+            Wait a second...
+        </template>
+    </div>
+
+</template>
